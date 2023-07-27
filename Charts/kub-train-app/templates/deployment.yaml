@@ -1,0 +1,32 @@
+{{- range $ms := $.Values.microservices }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: be-{{ $ms.name }}-cont
+  namespace: kub-train-{{ $.Values.stage }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: be-{{ $ms.name }}-cont
+  template:
+    metadata:
+      labels:
+        app: be-{{ $ms.name }}-cont
+    spec:
+      containers:
+      - name: be-{{ $ms.name }}-cont
+        image: fradidock/kub-train-be-{{ $ms.name }}:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: {{ $ms.port  }}
+          name: be-{{ $ms.name }}-cont
+        imagePullPolicy: Always
+---
+{{- end }} 

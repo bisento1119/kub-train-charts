@@ -1,0 +1,15 @@
+{{- range $ms := $.Values.microservices }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-be-{{ $ms.name }}-svc
+  namespace: kub-train-dev
+spec:
+  selector:
+    app: be-{{ $ms.name }}-cont
+  ports:
+    - protocol: TCP
+      port: {{ $ms.port  }}
+      targetPort: {{ $ms.port  }}
+---
+{{- end }}       
